@@ -15,13 +15,15 @@ private:
     //This should hold the current health of the player
     int AttackDamage;
     //This should hold the attack damage of the player
+    int enemyCurrency;
+    //This holds the currency player gets when enemy is defeated
 
     int level = 0;
 
 public:
     enemy();
 
-    enemy(string, int, int, int, int);
+    enemy(string, int, int, int, int, int);
 
     string getName();
 
@@ -32,6 +34,8 @@ public:
 
     //returns the current health
     int getDMG();
+
+    int getCurrency();
 
     //returns the current damage
     int getLVL();
@@ -45,6 +49,9 @@ public:
 
     //sets the current health
     void setDMG(int);
+
+    //this may not be needed as every enemy has a defined value
+    void setCurrency(int);
 
     //sets the current damage
     void setLVL(int);

@@ -8,13 +8,15 @@ enemy::enemy() {
     HealthPoints = MaxHealth;
     AttackDamage = 0;
     level = 0;
+    enemyCurrency = 0;
 }
 
-enemy::enemy(string n, int mh, int hp, int atk, int lvl) {
+enemy::enemy(string n, int mh, int hp, int atk, int cur, int lvl) {
     Name = n;
     MaxHealth = mh;
     HealthPoints = hp;
     AttackDamage = atk;
+    enemyCurrency = cur;
     level = lvl;
 }
 
@@ -39,6 +41,10 @@ int enemy::getLVL() {
     return level;
 }
 
+int enemy::getCurrency() {
+    return enemyCurrency;
+}
+
 void enemy::setName(string n) {
     Name = n;
 }
@@ -53,6 +59,10 @@ void enemy::setMaxHP(int hp) {
 
 void enemy::setDMG(int dmg) {
     AttackDamage = dmg;
+}
+
+void enemy::setCurrency(int curr) {
+    enemyCurrency = curr;
 }
 
 void enemy::setLVL(int lvl) {

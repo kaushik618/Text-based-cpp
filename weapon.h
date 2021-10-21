@@ -15,15 +15,25 @@ private:
     int W_cost;
     //Cost to buy the weapon=
 
-    public:
-        weapon();
-        weapon(string i, int d);
+public:
+    weapon();
 
-        void setItem(string);
-        void setDMG(int);
+    weapon(string i, int d, int u, int c);
 
-        string getItem();
-        int getDMG();
+    void setItem(string);
 
+    void setDMG(int);
+
+    void setUsage(int);
+
+    void setCost(int);
+
+    string getItem();
+
+    int getDMG();
+
+    int getUsage();
+
+    int getCost();
 
 };
