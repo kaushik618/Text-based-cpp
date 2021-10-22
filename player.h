@@ -3,6 +3,7 @@
 #include <iostream>
 #include<string>
 #include "weapon.h"
+#include <vector>
 
 using namespace std;
 
@@ -18,6 +19,7 @@ private:
     //This should hold the attack damage of the player
     int totalCurrency;
     //This is the total amount of money/coins the player has
+    vector<weapon> listOfWeaponsOwned;
 
 public:
     player();
@@ -34,6 +36,8 @@ public:
     int getDMG();
     //returns the current damage
     int getCurrency();
+
+    vector<weapon> getListOfWeapons();
 
     void setName(string);
 
@@ -52,7 +56,9 @@ public:
     void ModifyDamage(int);
     //Increments or decrements the player�s attack damage by the input value
 
-    void ModifyCurrency(bool, bool, int);
+    bool ModifyCurrency(bool, bool, int);
+
+    void addWeapons(weapon w1);
 
     friend ostream &operator<<(ostream &os, const player &p);
 };

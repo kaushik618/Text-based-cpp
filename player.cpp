@@ -6,6 +6,7 @@ player::player() {
     HealthPoints = MaxHealth;
     AttackDamage = 0;
     totalCurrency = 0;
+    listOfWeaponsOwned;
 
 }
 
@@ -28,6 +29,10 @@ int player::getMaxHP() {
 
 int player::getCurrency() {
     return totalCurrency;
+}
+
+vector<weapon> player::getListOfWeapons() {
+    return listOfWeaponsOwned;
 }
 
 void player::setName(string n) {
@@ -62,18 +67,23 @@ void player::ModifyDamage(int dmg) {
 
 //There are 2 times when this method is called, when weapon is purchased (amount decreases)
 // and when enemy is defeated (amount increases)
-void player::ModifyCurrency(bool isEnemyDefeated, bool isWeaponPurchased, int amount) {
+bool player::ModifyCurrency(bool isEnemyDefeated, bool isWeaponPurchased, int amount) {
     if (isEnemyDefeated) {
         totalCurrency += amount;
     }
     if (isWeaponPurchased) {
         if (totalCurrency - amount < 0) {
             cout << "Not enough Money in your wallet to buy the weapon" << endl;
-            return;
+            return false;
         } else {
             totalCurrency -= amount;
         }
     }
+    return true;
+}
+
+void player::addWeapons(weapon w1) {
+    listOfWeaponsOwned.push_back(w1);
 }
 
 ostream &operator<<(ostream &os, const player &p) {

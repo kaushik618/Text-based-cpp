@@ -14,24 +14,32 @@ void PlayerOptions(player &p, FileOperations &f, scoreboard &s);
 void ChoooseWeapon(weapon w1[4][4], int f, player &p1) {
     int floor = (f - 1);
     bool valid = true;
-    int choice;
+    string choice;
     while (valid) {
-        cout << "What weapon would you like to use? " << endl;
+        cout << "What weapon would you like to use? enter the weapon name" << endl;
 
-        for (int i = 0; i < 4; i++) {
-            cout << "Option: " << (i + 1) << ": " << w1[floor][i].getItem() << " " << w1[floor][i].getDMG() << endl;
+        for (weapon w2 : p1.getListOfWeapons()) {
+            cout << "Weapon : " << w2.getItem() << " Damage: " << w2.getDMG() << endl;
         }
+
         cout << "> ";
         cin >> choice;
-        if (choice < 1 || choice > 4) {
-            cout << "Invalid option, try again." << endl;
-            valid = true;
-        } else {
-            cout << "You have selected the " << w1[floor][(choice - 1)].getItem() << " as your weapon." << endl;
-            p1.setDMG(w1[floor][(choice - 1)].getDMG());
-            valid = false;
-        }
 
+        for (weapon w2 : p1.getListOfWeapons()) {
+            if (choice == w2.getItem()) {
+                if (w2.getUsage() < 1) {
+                    cout << "you already used the weapon, please use a diff one " << endl;
+                    valid = true;
+                } else {
+                    cout << "You have selected the " << w2.getItem() << " as your weapon." << endl;
+                    p1.setDMG(w2.getDMG());
+                    valid = false;
+                }
+            } else {
+                cout << "Invalid option, try again." << endl;
+                valid = true;
+            }
+        }
     }
 
 }
@@ -93,34 +101,28 @@ bool EnemyCombat(enemy &e1, player &p1, scoreboard &s1) {
         cout << "You lose " << e1.getDMG() << " health!" << endl;
 
         return true;
-
-        if (p1.getHP() < 0 || p1.getHP() == 0) {
-            cout << "You have " << p1.getHP() << " out of " << p1.getMaxHP() << endl;
-            cout << "Game Over." << endl;
-
-            s1.SB_out();
-
-            exit(10);
-        }
     } else {
         cout << "The " << e1.getName() << " was defeated! " << endl;
         cout << "**********************" << endl;
         s1.AddScore(s1.getDiffMod());
-
+        //Adds currency when enemy is defeated
+        p1.ModifyCurrency(true, false, e1.getCurrency());
+        // TODO: NEED to reduce the usage of weapon to zero.
         return false;
     }
 }
 
 
-void PlayerOptions(player &p, FileOperations &f, scoreboard &s) {
+void PlayerOptions(player &p, FileOperations &f, scoreboard &s, weapon w1[4][4]) {
     string choose;
+    string chooseWeapon;
     char simpleChoose;
 
     bool valid = true;
     while (valid) {
 
         cout << "What would you like to do? " << endl
-             << "[E]xamine Self, [B]uy Weapon, [C]ontinue, [S]coreboard, [Q]uit" << endl;
+             << "[E]xamine Self, [W]eapon buy, [C]ontinue, [S]coreboard, [Q]uit" << endl;
         cout << "> ";
         cin >> choose;
         simpleChoose = toupper(choose[0]);
@@ -156,8 +158,31 @@ void PlayerOptions(player &p, FileOperations &f, scoreboard &s) {
                 cout << endl;
                 valid = 1;
                 break;
-            case 'B':
-
+            case 'W':
+                cout << "Which weapon would like to buy? Type the weapon name" << endl;
+                for (int i = 0; i<4; i++) {
+                    for (int j = 0; j < 4; j++) {
+                        cout << "weapon name: " << w1[i][j].getItem() << " cost: " << w1[i][j].getCost() << endl;
+                    }
+                }
+                cin >> chooseWeapon;
+                for (int i = 0; i<4; i++) {
+                    for (int j = 0; j < 4; j++) {
+                        if (w1[i][j].getItem() == chooseWeapon) {
+                            int cost = w1[i][j].getCost();
+                            if (!p.ModifyCurrency(false, true, cost)) {
+                                cout << "Not enough money - please choose other weapon" << endl;
+                            } else {
+                                cout << "Weapon bough, adding to your weapon list" << endl;
+                                p.addWeapons(w1[i][j]); // Add to list of player weapons
+                            }
+                        } else {
+                            cout << "Invalid weapon choice - please try again" << endl;
+                        }
+                    }
+                }
+                valid = 1;
+                break;
 
             case 'Q' :
                 f.Save2File(p);

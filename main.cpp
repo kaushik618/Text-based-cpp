@@ -15,12 +15,12 @@
 
 using namespace std;
 
-void PlayerCombat(player &, vector<vector<weapon>> &, enemy &, scoreboard &);
+void PlayerCombat(player &, weapon[4][4], enemy &, scoreboard &);
 
 //void PlayerCombat(int, player&, enemy&);
 bool EnemyCombat(enemy &, player &, scoreboard &);
 
-void PlayerOptions(player &, FileOperations &, scoreboard &);
+void PlayerOptions(player &, FileOperations &, scoreboard &, weapon[4][4]);
 
 void ChoooseWeapon(weapon[4][4], int, player &);
 
@@ -47,14 +47,19 @@ int main() {
             w43("bomb", 75, 1, 75),
             w44("spell-book", 80, 1, 80);
 
-    vector<vector<weapon>> WeaponList
-            {
-                    {w11, w12, w13, w14},
-                    {w21, w22, w23, w24},
-                    {w31, w32, w33, w34},
-                    {w41, w42, w43, w44}
+    weapon WeaponList[4][4] = {{w11, w12, w13, w14},
+                               {w21, w22, w23, w24},
+                               {w31, w32, w33, w34},
+                               {w41, w42, w43, w44}};
 
-            };
+//    vector<vector<weapon>> WeaponList
+//            {
+//                    {w11, w12, w13, w14},
+//                    {w21, w22, w23, w24},
+//                    {w31, w32, w33, w34},
+//                    {w41, w42, w43, w44}
+//
+//            };
 
     FileOperations SaveSlot;
     scoreboard LeaderBoard;
@@ -72,7 +77,7 @@ int main() {
     //SaveSlot.Save2File(LeaderBoard);
     //SaveSlot.Save2File(Player1);
 
-    PlayerOptions(Player1, SaveSlot, LeaderBoard);
+    PlayerOptions(Player1, SaveSlot, LeaderBoard, WeaponList);
 
     if (LeaderBoard.getFloor() == 0) {
         FloorCount++;
@@ -81,13 +86,13 @@ int main() {
         // IMPP ---- enemy currency is defined as enemy max health
         enemy mob1("Goblin", 10, 10, 2, 10, 1);
         cout << "A " << mob1.getName() << " blocks your path." << endl;
-        PlayerCombat(Player1, WeaponList, mob1, LeaderBoard);
+        PlayerCombat(WeaponList, Player1, mob1, LeaderBoard);
         //PlayerCombat(FloorCount, Player1, troll);
 
         //ChoooseWeapon(WeaponList, FloorCount, Player1);
         SaveSlot.Save2File(LeaderBoard);
         SaveSlot.Save2File(Player1);
-        PlayerOptions(Player1, SaveSlot, LeaderBoard);
+        PlayerOptions(Player1, SaveSlot, LeaderBoard, WeaponList);
 
     }
     if (LeaderBoard.getFloor() == 1) {
@@ -97,11 +102,11 @@ int main() {
 
         enemy mob2("Troll", 15, 20, 2, 15, 2);
         cout << "A " << mob2.getName() << " blocks your path." << endl;
-        PlayerCombat(Player1, WeaponList, mob2, LeaderBoard);
+        PlayerCombat(WeaponList, Player1, mob2, LeaderBoard);
 
         SaveSlot.Save2File(LeaderBoard);
         SaveSlot.Save2File(Player1);
-        PlayerOptions(Player1, SaveSlot, LeaderBoard);
+        PlayerOptions(Player1, SaveSlot, LeaderBoard, WeaponList);
 
     }
     if (LeaderBoard.getFloor() == 2) {
@@ -112,11 +117,11 @@ int main() {
 
         enemy mob3("slime", 20, 5, 2, 20, 3);
         cout << "A " << mob3.getName() << " blocks your path." << endl;
-        PlayerCombat(Player1, WeaponList, mob3, LeaderBoard);
+        PlayerCombat(WeaponList, Player1, mob3, LeaderBoard);
 
         SaveSlot.Save2File(LeaderBoard);
         SaveSlot.Save2File(Player1);
-        PlayerOptions(Player1, SaveSlot, LeaderBoard);
+        PlayerOptions(Player1, SaveSlot, LeaderBoard, WeaponList);
 
     }
     if (LeaderBoard.getFloor() == 3) {
@@ -127,7 +132,7 @@ int main() {
 
         enemy mob4("dragon", 20, 20, 2, 20, 4);
         cout << "A " << mob4.getName() << " blocks your path." << endl;
-        PlayerCombat(Player1, WeaponList, mob4, LeaderBoard);
+        PlayerCombat(WeaponList, Player1, mob4, LeaderBoard);
         SaveSlot.Save2File(LeaderBoard);
         SaveSlot.Save2File(Player1);
     }
